@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Train Ticket Reservation System</title>
+    <link type="text/css" th:href="@{\css\style.css}" rel="stylesheet">
+    <!--    Bootstrap link from webjars-->
+    <script th:src="@{\webjars\jquery\3.0.0\jquery.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{\webjars\bootstrap\4.3.1\css\bootstrap.css}">
+    <script type="text/javascript"  th:src="@{\webjars\bootstrap\4.3.1\js\bootstrap.js}"></script>
+</head>
+<body>
+<!--Header Section-->
+<div class="menu-bar shadow">
+    <h2 class="heading"><img style="height:50px;" th:src="@{\img\trainTicket.png}">  &emsp; TRAIN TICKET RESERVATION</h2>
+    <ul>
+        <li><a href="index"></i> HOME</a>
+        <li class="active"></i><a href="trains">TRAINS</a></li>
+        <li><a th:href="@{/logout}">LOGOUT</a></li>
+    </ul>
+</div><br>
+
+<!--Trains Table from Backend-->
+<table class="table-striped shadow" >
+    <thead>
+    <th>Train No</th>
+    <th>Train Name</th>
+    <th>Source</th>
+    <th>Destination</th>
+    <th>Price</th>
+    </thead>
+    <tbody>
+    <th:block th:each="train:${trainList}">
+        <tr class='clickable-row' th:data-href="@{index?(trainNo=${train.trainNo})}">
+            <td>[[${train.trainNo}]]</td>
+            <td>[[${train.trainName}]]</td>
+            <td>[[${train.source}]]</td>
+            <td>[[${train.destination}]]</td>
+            <td>[[${train.ticketPrice}]]</td>
+        </tr>
+    </th:block>
+    </tbody>
+</table><br>
+
+</body>
+
+
+
+<script>
+
+<!-- this function is for making the whole row as clickable-->
+
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+
+    <!--this funtion for generating dynamic form feilds-->
+$(document).off('input').on('input','#noOfTrains' ,function(){
+  var val=$(this).val();
+  if(val<=5){
+  $('#content').html('');
+  for (let i = 1; i <= val; i++) {
+  $('#content').append('<div class="row col-12 justify-content-between">'+
+                '<div class="form-group"><label for="trainNo'+i+'">Train No:</label>'+
+          '<input type="text" name="trainNo'+i+'"  id="trainNO'+i+'" class="form-control" placeholder="Train No"></div>'+
+          '<div class="form-group"><label for="trainName'+i+'">Train Name:</label>'+
+          '<input type="text" name="trainName'+i+'"  id="trainName'+i+'" class="form-control" placeholder="Train No"></div>'+
+          '<div class="form-group"><label for="source'+i+'">Source:</label>'+
+          '<input type="text" name="source'+i+'"  id="source'+i+'" class="form-control" placeholder="Source"></div>'+
+          '<div class="form-group"><label for="destination'+i+'" >Destination :&emsp;</label><br>'+
+         '<input type="text" name="destination'+i+'"  id="destination'+i+'" class="form-control" placeholder="Destination"></div>'+
+             '<div class="form-group"><label for="price'+i+'" >Price :&emsp;</label><br>'+
+         '<input type="text" name="price'+i+'"  id="price'+i+'" class="form-control" placeholder="Price"></div>'+
+           '</div></div>');
+  }
+  }
+  else alert("No of Passenger must be less than 5");
+ });
+
+</script>
+</html>
